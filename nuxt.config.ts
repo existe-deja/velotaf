@@ -29,4 +29,10 @@ export default defineNuxtConfig({
       stylistic: true,
     },
   },
+  icon: {
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 256,
+    },
+  },
 })
