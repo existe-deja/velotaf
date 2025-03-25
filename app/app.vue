@@ -2,10 +2,12 @@
 import { LngLatBounds, Map } from 'maplibre-gl'
 import { trainStations } from '~/assets/data/train-stations'
 
+const { maptilerKey } = useRuntimeConfig().public
+
 onMounted(() => {
   const map = new Map({
     container: 'map',
-    style: 'https://tiles.stadiamaps.com/styles/osm_bright.json',
+    style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${maptilerKey}`,
     zoom: 1,
   })
 
