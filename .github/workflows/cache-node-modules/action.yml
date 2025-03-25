@@ -1,0 +1,27 @@
+# .github/actions/setup-node/action.yml
+name: 'Cache node_modules'
+description: 'Cache node_modules to speed up actions'
+
+inputs:
+  cache-key:
+    description: 'key used to retrieve cache'
+    required: false
+    default: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      with:
+        node-version:
+        path: node_modules
+        key: ${{ inputs.cache-key }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules-
+
+
+
+
+
+       

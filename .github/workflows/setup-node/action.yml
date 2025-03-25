@@ -1,0 +1,17 @@
+# .github/actions/setup-node/action.yml
+name: 'Setup Node.js'
+description: 'Configure Node.js environment'
+
+inputs:
+  node-version:
+    description: 'Version of Node.js to setup'
+    required: false
+    default: '22'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}

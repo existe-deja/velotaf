@@ -14,24 +14,13 @@ jobs:
       
       - run: corepack enable
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      # Mise à jour pour utiliser la version 3 de actions/cache
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node
+      
       - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+        uses: ./.github/workflows/cache-node-modules
 
       - run: npm install
-
-      - name: Create .env file
-        run: |
-          echo "NUXT_PUBLIC_MAPTILER_KEY=${{ secrets.NUXT_PUBLIC_MAPTILER_KEY }}" >> .env
 
   build:
     runs-on: ubuntu-latest
@@ -39,20 +28,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+      - name: Setup Node.js
+        uses: ./.github/workflows/setup-node
 
-      - name: Restore node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+      - name: Cache node_modules
+        uses: ./.github/workflows/cache-node-modules
 
       # install if cache is missing or failed
       - run: npm install
+
+      - name: Create .env file
+        run: |
+          echo "NUXT_PUBLIC_MAPTILER_KEY=${{ secrets.NUXT_PUBLIC_MAPTILER_KEY }}" >> .env
 
       - name: Build the site
         run: NUXT_APP_BASE_URL=/velotaf/ npx nuxt build --preset github_pages
