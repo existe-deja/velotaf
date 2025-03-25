@@ -5,7 +5,7 @@ import { trainStations } from '~/assets/data/train-stations'
 onMounted(() => {
   const map = new Map({
     container: 'map',
-    style: 'https://demotiles.maplibre.org/style.json',
+    style: 'https://tiles.stadiamaps.com/styles/osm_bright.json',
     zoom: 1,
   })
 
