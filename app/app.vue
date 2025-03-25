@@ -20,32 +20,32 @@ const enum LAYERS {
 
 const map = ref<MapLibre>()
 const coordinates = trainStations.features.map(({ geometry }) => geometry.coordinates)
-const computing = ref<boolean>(false)
+const processing = ref<boolean>(false)
 
 const trainStationBounds = coordinates.reduce((bounds, coord) => {
   return bounds.extend(coord)
 }, new LngLatBounds(coordinates[0], coordinates[1]))
 
 const updateTrainStationsArea = async (radius: number) => {
-  if (!map.value || computing.value) {
+  if (!map.value || processing.value) {
     return
   }
 
-  computing.value = true
+  processing.value = true
   const source = map.value.getSource(SOURCES.TRAIN_STATIONS_AREA) as GeoJSONSource
   if (!source) {
-    computing.value = false
+    processing.value = false
     return
   }
 
   const buffered = await bufferTrainStations(trainStations, radius, { units: 'kilometers' })
   if (!buffered) {
-    computing.value = false
+    processing.value = false
     return
   }
 
   source.setData(buffered)
-  computing.value = false
+  processing.value = false
 }
 
 const radius = ref<number>(0)
@@ -190,13 +190,14 @@ onMounted(() => {
         <template #label>
           <span>{{ `Zone de ${radius}km de rayon` }}</span>
           <span
-            v-if="computing"
+            v-if="processing"
             class="flex items-center h-[1lh]"
           ><UIcon name="svg-spinners:180-ring" /></span>
         </template>
         <UInputNumber
           v-model="radius"
           :step="0.5"
+          :disabled="processing"
         />
       </UFormField>
     </UCard>
