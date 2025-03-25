@@ -37,6 +37,15 @@ jobs:
       # install if cache is missing or failed
       - run: npm install
 
+      - name: Verify secrets are defined
+        run: |
+          if [ -z "${{ secrets.NUXT_PUBLIC_MAPTILER_KEY }}" ]; then
+            echo "NUXT_PUBLIC_MAPTILER_KEY is undefined"
+            exit 1
+          else
+            echo "NUXT_PUBLIC_MAPTILER_KEY is defined"
+          fi
+
       - name: Create .env file
         run: |
           echo "NUXT_PUBLIC_MAPTILER_KEY=${{ secrets.NUXT_PUBLIC_MAPTILER_KEY }}" >> .env
