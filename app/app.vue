@@ -5,7 +5,7 @@ import { trainStations } from '~/assets/data/train-stations'
 onMounted(() => {
   const map = new Map({
     container: 'map',
-    style: 'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+    style: 'https://demotiles.maplibre.org/style.json',
     zoom: 1,
   })
 
